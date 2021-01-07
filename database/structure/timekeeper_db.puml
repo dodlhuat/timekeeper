@@ -1,0 +1,108 @@
+@startuml
+entity Users {
+* id : number
+--
+* password : string
+* email : string
+* firstname : string
+* lastname : string
+* created_at : timestamp
+* updated_at : timestamp
+* deleted_at : timestamp
+}
+entity UserRoles {
+* id : number
+--
+* name : string
+}
+entity Actions {
+* id : number
+--
+* name : string
+}
+entity WorkingTimes {
+* id : number
+--
+* active_at : timestamp
+* type : **WorkingTimeTypes**
+* minutes : number
+* day : null | **Days**
+* created_at : timestamp
+* updated_at : timestamp
+* deleted_at : timestamp
+}
+entity HolidayRequests {
+* id : number
+--
+* user_id : number
+* date_from : timestamp
+* date_to : timestamp
+* minutes : number
+* accepted : boolean
+* reason : string
+}
+entity Absences {
+* id : number
+--
+* absence_type : **AbsenceTypes**
+* minutes : number
+* date : timestamp
+}
+entity TrackedWorkingTimes {
+* id : number
+--
+* user_id : number
+* start : timestamp
+* end : timestamp
+* type : **WorkTypes**
+}
+entity TrackedBreaks {
+* id : number
+--
+* user_id : number
+* tracked_working_time_id : number
+* start : timestamp
+* end : timestamp
+}
+entity SystemSettings {
+* id : number
+--
+* type : string
+* value : string
+}
+
+Users ||--o{ UserRoles
+UserRoles ||--o{ Actions
+Users ||--o{ WorkingTimes
+Users ||--o{ Absences
+Users ||--o{ HolidayRequests
+Users ||--o{ TrackedWorkingTimes
+TrackedWorkingTimes ||--o{ TrackedBreaks
+
+enum AbsenceTypes {
+ vacation
+ public_holiday
+ sick_leave
+ compensation_time
+ other
+}
+enum WorkingTimeTypes {
+ monthly
+ weekly
+ daily
+}
+enum WorkTypes {
+ standard
+ homeoffice
+ travel
+}
+enum Days {
+ monday
+ tuesday
+ wednesday
+ thursday
+ friday
+ saturday
+ sunday
+}
+@enduml
