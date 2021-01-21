@@ -13,7 +13,7 @@ class CreateUserRolesActionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_roles_actions', function (Blueprint $table) {
+        Schema::create('user_role_action', function (Blueprint $table) {
             $table->foreignId('user_role_id')->constrained();
             $table->foreignId('action_id')->constrained();
         });
@@ -26,10 +26,10 @@ class CreateUserRolesActionsTable extends Migration
      */
     public function down()
     {
-        Schema::table('user_roles_actions', function (Blueprint $table) {
+        Schema::table('user_role_action', function (Blueprint $table) {
             $table->dropForeign(['user_role_id']);
             $table->dropForeign(['action_id']);
         });
-        Schema::dropIfExists('user_roles_actions');
+        Schema::dropIfExists('user_role_action');
     }
 }

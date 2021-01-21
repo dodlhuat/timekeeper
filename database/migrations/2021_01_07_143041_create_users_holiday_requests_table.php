@@ -13,7 +13,7 @@ class CreateUsersHolidayRequestsTable extends Migration
      */
     public function up()
     {
-        Schema::create('users_holiday_requests', function (Blueprint $table) {
+        Schema::create('user_holiday_request', function (Blueprint $table) {
             $table->foreignId('user_id')->constrained();
             $table->foreignId('holiday_request_id')->constrained();
         });
@@ -26,10 +26,10 @@ class CreateUsersHolidayRequestsTable extends Migration
      */
     public function down()
     {
-        Schema::table('users_holiday_requests', function (Blueprint $table) {
+        Schema::table('user_holiday_request', function (Blueprint $table) {
             $table->dropForeign(['user_id']);
             $table->dropForeign(['holiday_request_id']);
         });
-        Schema::dropIfExists('users_holiday_requests');
+        Schema::dropIfExists('user_holiday_request');
     }
 }

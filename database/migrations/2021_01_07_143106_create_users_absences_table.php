@@ -26,10 +26,10 @@ class CreateUsersAbsencesTable extends Migration
      */
     public function down()
     {
-        Schema::table('users_absences', function (Blueprint $table) {
+        Schema::table('user_absence', function (Blueprint $table) {
             $table->dropForeign(['user_id']);
             $table->dropForeign(['absence_id']);
         });
-        Schema::dropIfExists('users_absences');
+        Schema::dropIfExists('user_absence');
     }
 }
