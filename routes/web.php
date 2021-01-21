@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AngularController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,6 +13,9 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+// this will allow angular routes to work and only handle /api routes with laravel
+Route::any('/{any}', [AngularController::class, 'index'])->where('any', '^(?!api).*$');
 
 Route::get('/', function () {
     return view('welcome');
