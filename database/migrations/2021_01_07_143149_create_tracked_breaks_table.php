@@ -16,6 +16,9 @@ class CreateTrackedBreaksTable extends Migration
         Schema::create('tracked_breaks', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->foreignId('tracked_working_time_id')->constrained();
+            $table->dateTime('start');
+            $table->dateTime('end')->nullable();
         });
     }
 
@@ -26,6 +29,9 @@ class CreateTrackedBreaksTable extends Migration
      */
     public function down()
     {
+        Schema::table('tracked_breaks', function (Blueprint $table) {
+            $table->dropForeign(['tracked_working_time_id']);
+        });
         Schema::dropIfExists('tracked_breaks');
     }
 }

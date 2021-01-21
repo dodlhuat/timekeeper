@@ -16,6 +16,12 @@ class CreateHolidayRequestsTable extends Migration
         Schema::create('holiday_requests', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->foreignId('user_id')->constrained();
+            $table->dateTime('date_from');
+            $table->dateTime('date_to');
+            $table->integer('minutes');
+            $table->boolean('accepted')->nullable();
+            $table->text('reason')->nullable();
         });
     }
 
@@ -26,6 +32,9 @@ class CreateHolidayRequestsTable extends Migration
      */
     public function down()
     {
+        Schema::table('holiday_requests', function (Blueprint $table) {
+            $table->dropForeign(['user_id']);
+        });
         Schema::dropIfExists('holiday_requests');
     }
 }

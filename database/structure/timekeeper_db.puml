@@ -59,7 +59,6 @@ entity TrackedWorkingTimes {
 entity TrackedBreaks {
 * id : number
 --
-* user_id : number
 * tracked_working_time_id : number
 * start : timestamp
 * end : timestamp

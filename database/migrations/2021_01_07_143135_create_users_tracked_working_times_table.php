@@ -14,8 +14,8 @@ class CreateUsersTrackedWorkingTimesTable extends Migration
     public function up()
     {
         Schema::create('users_tracked_working_times', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('tracked_working_time_id')->constrained();
         });
     }
 
@@ -26,6 +26,10 @@ class CreateUsersTrackedWorkingTimesTable extends Migration
      */
     public function down()
     {
+        Schema::table('users_tracked_working_times', function (Blueprint $table) {
+            $table->dropForeign(['user_id']);
+            $table->dropForeign(['tracked_working_time_id']);
+        });
         Schema::dropIfExists('users_tracked_working_times');
     }
 }

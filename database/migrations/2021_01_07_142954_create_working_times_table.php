@@ -15,6 +15,10 @@ class CreateWorkingTimesTable extends Migration
     {
         Schema::create('working_times', function (Blueprint $table) {
             $table->id();
+            $table->dateTime('active_at');
+            $table->foreignId('type_id')->constrained();
+            $table->integer('minutes');
+            $table->enum('day', [null, 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']);
             $table->timestamps();
         });
     }
@@ -26,6 +30,9 @@ class CreateWorkingTimesTable extends Migration
      */
     public function down()
     {
+        Schema::table('working_times', function (Blueprint $table) {
+            $table->dropForeign(['type_id']);
+        });
         Schema::dropIfExists('working_times');
     }
 }
