@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:api')->get('/user', 'App\Http\Controllers\Users\UserController@index');
+Route::middleware('auth:api')->get('/user-role', 'App\Http\Controllers\Users\UserRoleController@index');
 
 /**
  * Authentication Routes

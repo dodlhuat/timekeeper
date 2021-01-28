@@ -21,6 +21,11 @@ class Controller extends BaseController
         $resource = new Collection(app($className)->all(), $transformer);
 
         $fractal = new Manager();
+
+        // add includes
+        if (isset($_GET['include'])) {
+            $fractal->parseIncludes($_GET['include']);
+        }
         return $fractal->createData($resource)->toJson();
     }
 

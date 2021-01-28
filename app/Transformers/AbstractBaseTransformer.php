@@ -11,6 +11,7 @@ abstract class AbstractBaseTransformer extends TransformerAbstract
      * @var array contains all attributes that should be shown in the api response
      */
     protected $attributes = [];
+
     /**
      * @var array mapping of includes if needed
      */
@@ -19,6 +20,7 @@ abstract class AbstractBaseTransformer extends TransformerAbstract
     public function transform($model)
     {
         $finalAttributes = [];
+        // always add id
         $finalAttributes['id'] = (int) $model->id;
         $this->addAttributes($model, $finalAttributes);
         return $finalAttributes;
