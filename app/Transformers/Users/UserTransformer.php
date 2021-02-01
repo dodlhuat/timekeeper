@@ -9,11 +9,11 @@ class UserTransformer extends AbstractBaseTransformer
 {
     protected $attributes = ['firstname', 'lastname'];
 
-    protected $availableIncludes = ['user-role'];
+    protected $availableIncludes = ['user-roles'];
 
-    public function includeUserRole(User $user)
+    public function includeUserRoles(User $user)
     {
-        $userRole = $user->userRole;
-        return $this->collection($userRole, new UserRoleTransformer);
+        $userRoles = $user->userRoles;
+        return $this->collection($userRoles, new UserRoleTransformer);
     }
 }

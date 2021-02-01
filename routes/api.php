@@ -14,8 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', 'App\Http\Controllers\Users\UserController@index');
-Route::middleware('auth:api')->get('/user-role', 'App\Http\Controllers\Users\UserRoleController@index');
+Route::group(['prefix' => 'users'], function () {
+    Route::get('/', 'App\Http\Controllers\Users\UserController@index');
+    Route::get('/{id}', 'App\Http\Controllers\Users\UserController@show');
+});
+
+Route::group(['prefix' => 'user-roles'], function () {
+    Route::get('/', 'App\Http\Controllers\Users\UserRoleController@index');
+    Route::get('/{id}', 'App\Http\Controllers\Users\UserRoleController@show');
+});
 
 /**
  * Authentication Routes

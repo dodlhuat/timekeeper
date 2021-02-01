@@ -7,4 +7,6 @@ use App\Transformers\AbstractBaseTransformer;
 class UserRoleTransformer extends AbstractBaseTransformer
 {
     protected $attributes = ['name'];
+
+    protected $availableIncludes = ['actions'];
 }

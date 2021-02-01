@@ -12,11 +12,10 @@ class UserController extends Controller implements ControllerInterface
     //
     public function index() {
         return $this->getIndexForModel(User::class);
-        return User::all();
     }
 
     public function show($id) {
-        return User::find($id);
+        return $this->getShowForModel(User::class, $id);
     }
 
     public function store(Request $request) {

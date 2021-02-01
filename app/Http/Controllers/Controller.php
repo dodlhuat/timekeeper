@@ -11,17 +11,14 @@ use League\Fractal\Manager;
 use League\Fractal\Resource\Item;
 use League\Fractal\Resource\Collection;
 
-class Controller extends BaseController
-{
+class Controller extends BaseController {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function getIndexForModel(string $className)
-    {
+    public function getIndexForModel(string $className) {
         $transformer = $this->getTransformer($className);
         $resource = new Collection(app($className)->all(), $transformer);
 
         $fractal = new Manager();
-
         // add includes
         if (isset($_GET['include'])) {
             $fractal->parseIncludes($_GET['include']);
@@ -29,9 +26,16 @@ class Controller extends BaseController
         return $fractal->createData($resource)->toJson();
     }
 
-    public function getShowForModel(string $className)
-    {
-
+    public function getShowForModel(string $className, int $id) {
+        $model = $className::findOrFail($id);
+        $transformer = $this->getTransformer($className);
+        $item = new Item($model, $transformer);
+        $fractal = new Manager();
+        // add includes
+        if (isset($_GET['include'])) {
+            $fractal->parseIncludes($_GET['include']);
+        }
+        return $fractal->createData($item)->toJson();
     }
 
     /**
@@ -40,8 +44,7 @@ class Controller extends BaseController
      * @param string $className
      * @return AbstractBaseTransformer
      */
-    private function getTransformer(string $className)
-    {
+    private function getTransformer(string $className) {
         $transformer_name = str_replace('App\\Models\\', 'App\\Transformers\\', $className) . 'Transformer';
         return new $transformer_name;
     }
