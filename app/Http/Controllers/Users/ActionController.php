@@ -4,18 +4,18 @@ namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ControllerInterface;
-use App\Models\Users\UserRole;
+use App\Models\Users\Action;
 use Illuminate\Http\Request;
 
-class UserRoleController extends Controller implements ControllerInterface
+class ActionController extends Controller implements ControllerInterface
 {
     //
     public function index() {
-        return $this->getIndexForModel(UserRole::class);
+        return $this->getIndexForModel(Action::class);
     }
 
     public function show($id) {
-        return $this->getShowForModel(UserRole::class, $id);
+        return $this->getShowForModel(Action::class, $id);
     }
 
     public function store(Request $request) {

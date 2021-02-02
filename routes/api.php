@@ -24,14 +24,12 @@ Route::group(['prefix' => 'user-roles'], function () {
     Route::get('/{id}', 'App\Http\Controllers\Users\UserRoleController@show');
 });
 
+Route::group(['prefix' => 'actions'], function () {
+    Route::get('/', 'App\Http\Controllers\Users\ActionController@index');
+    Route::get('/{id}', 'App\Http\Controllers\Users\ActionController@show');
+});
+
 /**
  * Authentication Routes
  */
-/*
-Route::group(['prefix' => 'auth/v1', 'middleware' => 'api'], function () {
-    Route::post('login', 'AuthController@login');
-    Route::post('logout', 'AuthController@logout');
-});
-*/
-
 Route::post('login', 'App\Http\Controllers\AuthController@login');
