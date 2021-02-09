@@ -12,6 +12,11 @@ abstract class AbstractBaseTransformer extends TransformerAbstract {
     protected $attributes = [];
 
     /**
+     * @var string[] contains default attributes that will be in a api response if available
+     */
+    protected $defaultAttributes = ['id', 'created_at', 'updated_at', 'deleted_at'];
+
+    /**
      * @var array mapping of includes if needed
      */
     protected $typeMappings = [];

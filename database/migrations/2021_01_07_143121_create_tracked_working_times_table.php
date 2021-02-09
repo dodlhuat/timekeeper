@@ -19,7 +19,7 @@ class CreateTrackedWorkingTimesTable extends Migration
             $table->foreignId('user_id')->constrained();
             $table->dateTime('start');
             $table->dateTime('end')->nullable();
-            $table->foreignId('type_id')->constrained();
+            $table->foreignId('type_id')->constrained('work_types');
         });
     }
 
