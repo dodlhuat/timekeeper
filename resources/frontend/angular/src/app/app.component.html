@@ -1,3 +1,15 @@
+<span class="form-inline">
+  <select
+      class="form-control"
+      #selectedLang
+      (change)="this.translate.use(selectedLang.value)">
+    <option *ngFor="let language of translate.getLangs()"
+      [value]="language"
+      [selected]="language === translate.currentLang">
+      {{ language }}
+    </option>
+  </select>
+</span>
 <div class="container">
   <app-login></app-login>
 </div>
