@@ -4,6 +4,12 @@ use App\Transformers\AbstractBaseTransformer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
+/**
+ * Transformer Class
+ *
+ * @param $model
+ * @return AbstractBaseTransformer
+ */
 function transformerClass($model): AbstractBaseTransformer {
     if (!$model || ($model instanceof Collection && $model->isEmpty())) {
         return new class extends AbstractBaseTransformer {

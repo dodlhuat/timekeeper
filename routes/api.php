@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,17 +13,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['prefix' => 'users'], function () {
+Route::get('/unauthorized', function () {
+    return response(['error' => 'Unauthorized', 'code' => 401], 401)->header('Content-Type', 'text/json');
+})->name('unauthorized');
+
+Route::group(['prefix' => 'users', 'middleware' => 'auth:api'], function () {
     Route::get('/', 'App\Http\Controllers\Users\UserController@index');
+    Route::get('/current', function () {
+        return ['data' => ['id' => auth()->user()->id]];
+    });
     Route::get('/{id}', 'App\Http\Controllers\Users\UserController@show');
 });
 
-Route::group(['prefix' => 'user-roles'], function () {
+Route::group(['prefix' => 'user-roles', 'middleware' => 'auth:api'], function () {
     Route::get('/', 'App\Http\Controllers\Users\UserRoleController@index');
     Route::get('/{id}', 'App\Http\Controllers\Users\UserRoleController@show');
 });
 
-Route::group(['prefix' => 'actions'], function () {
+Route::group(['prefix' => 'actions', 'middleware' => 'auth:api'], function () {
     Route::get('/', 'App\Http\Controllers\Users\ActionController@index');
     Route::get('/{id}', 'App\Http\Controllers\Users\ActionController@show');
 });

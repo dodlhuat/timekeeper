@@ -15,6 +15,6 @@
       <mat-hint>Hint</mat-hint>
     </mat-form-field>
 
-    <button mat-flat-button color="primary">{{'Login' | translate}}</button>
+    <button [disabled]="buttonLoading" mat-flat-button color="primary" (click)="authenticate()">{{'Login' | translate}}<mat-spinner [diameter]="19" *ngIf="buttonLoading" class="absolute-loading-spinner"></mat-spinner></button>
   </mat-card-content>
 </mat-card>
