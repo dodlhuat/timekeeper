@@ -20,6 +20,7 @@ import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {CommonModule} from "@angular/common";
 import { CalendarComponent } from './calendar/calendar.component';
+import {ReactiveFormsModule} from "@angular/forms";
 
 export function httpTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -53,7 +54,8 @@ export function httpTranslateLoader(http: HttpClient) {
       }
     }),
     MatOptionModule,
-    MatSelectModule
+    MatSelectModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

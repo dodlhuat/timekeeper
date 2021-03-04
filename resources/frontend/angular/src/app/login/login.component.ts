@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {DatabaseService} from "../database.service";
+import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-login',
@@ -8,27 +9,36 @@ import {DatabaseService} from "../database.service";
 })
 export class LoginComponent implements OnInit {
   public buttonLoading = false;
+  public globalLoading = true;
+
+  public username = new FormControl('');
+  public password = new FormControl('');
 
   constructor(private database: DatabaseService) {
   }
 
   public ngOnInit(): void {
+    this.database.checkToken().subscribe(
+      data => {
+        if(data.code == 401) {
+          this.globalLoading = false;
+        }
+      }
+    )
   }
 
   public authenticate(): void {
     this.buttonLoading = true;
-    // todo: try to use local storage data beforehands localStorage.getItem('userToken')
-    if (localStorage.getItem('userToken') !== null) {
-      this.database.getModel('User', {id: 1});
-    } else {
-      // TODO: the if needs to be removed
-      this.database.authenticate('abauer@asqs.net', 'andib81').subscribe(
-        data => {
-          this.buttonLoading = false;
-          localStorage.setItem('userToken', data.token);
-        },
-        error => console.log(error)
-      );
-    }
+    this.database.authenticate(this.username.value, this.password.value).subscribe(
+      data => {
+        this.buttonLoading = false;
+        console.log(data)
+        localStorage.setItem('userToken', data.token);
+      },
+      error => {
+        this.buttonLoading = false;
+        console.log(error)
+      }
+    );
   }
 }

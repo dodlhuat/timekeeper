@@ -1,5 +1,5 @@
 <div class="container">
-  <mat-toolbar class="main-toolbar">
+  <mat-toolbar class="main-toolbar" *ngIf="router.url !== '/login'">
     <span>Timekeeper</span>
     <app-language-selector></app-language-selector>
   </mat-toolbar>
