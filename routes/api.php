@@ -17,6 +17,10 @@ Route::get('/unauthorized', function () {
     return response(['error' => 'Unauthorized', 'code' => 401], 401)->header('Content-Type', 'text/json');
 })->name('unauthorized');
 
+Route::get('/token-check', function () {
+   return response()->json(['valid' => auth()->check()]);
+});
+
 Route::group(['prefix' => 'users', 'middleware' => 'auth:api'], function () {
     Route::get('/', 'App\Http\Controllers\Users\UserController@index');
     Route::get('/current', function () {

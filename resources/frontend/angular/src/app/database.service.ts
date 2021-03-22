@@ -16,68 +16,42 @@ export class DatabaseService {
   private httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
   };
-  public authentication = new BehaviorSubject<{ token: string, code: number }>({token: '', code: 404});
+  public authentication = new BehaviorSubject<{ token: string, code: number }>({code: 404, token: ''});
 
   constructor(private http: HttpClient) {
   }
 
-  public authenticate(email: string, password: string): BehaviorSubject<{ token: string, code: number }> {
-    if (localStorage.getItem('userToken') !== null) {
-      return this.authenticationCheck(email, password);
-    } else {
-      return this.doAuth(email, password);
-    }
-  }
-
-  public doAuth(email: string, password: string) {
-    this.http.post<any>(window.location.protocol + "//" + window.location.hostname + ":8000/api/login", {
+  public authenticate(email: string, password: string) {
+    this.http.post<{token: string}>(window.location.protocol + "//" + window.location.hostname + ":8000/api/login", {
       email,
       password
     }, this.httpOptions)
       .subscribe(
         data => {
-          this.authentication.next({token: data.token, code: 200});
+          localStorage.setItem('userToken', data.token);
+          this.authentication.next({code: 200, token: data.token});
         },
         error => {
-          this.authentication.next({token: '', code: 401});
+          this.authentication.next({code: 401, token: ''});
         });
-    return this.authentication;
   }
 
-  public authenticationCheck(email: string, password: string): BehaviorSubject<{ token: string, code: number }> {
+  public checkIfAuthenticated() {
     if (localStorage.getItem('userToken') !== null) {
       let token = localStorage.getItem('userToken')!;
       this.httpOptions.headers = this.httpOptions.headers.append('Authorization', 'Bearer ' + token);
-      this.http.get(window.location.protocol + "//" + window.location.hostname + ":8000/api/users/current", this.httpOptions).subscribe(
-        user => {
-          // already authenticated
-          this.authentication.next({token, code: 200});
-        },
-        error => {
-          this.doAuth(email, password);
+      this.http.get<{valid: boolean}>(window.location.protocol + "//" + window.location.hostname + ":8000/api/token-check", this.httpOptions).subscribe(
+        (data) => {
+          if (data.valid) {
+            this.authentication.next({code: 200, token: token});
+          } else {
+            this.authentication.next({code: 401, token: ''});
+          }
         }
-      );
-    }
-    return this.authentication;
-  }
-
-  public checkToken(): BehaviorSubject<{ token: string, code: number }> {
-    if (localStorage.getItem('userToken') !== null) {
-      let token = localStorage.getItem('userToken')!;
-      this.httpOptions.headers = this.httpOptions.headers.append('Authorization', 'Bearer ' + token);
-      this.http.get(window.location.protocol + "//" + window.location.hostname + ":8000/api/users/current", this.httpOptions).subscribe(
-        user => {
-          // already authenticated
-          this.authentication.next({token, code: 200});
-        },
-        error => {
-          this.authentication.next({token: '', code: 401});
-        }
-      );
+      )
     } else {
-      this.authentication.next({token: '', code: 401});
+      this.authentication.next({code: 401, token: ''});
     }
-    return this.authentication;
   }
 
   public getModel(model: any, params?: SearchParameters) {

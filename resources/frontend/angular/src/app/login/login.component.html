@@ -6,13 +6,13 @@
     <mat-form-field appearance="legacy">
       <mat-label>Username</mat-label>
       <input matInput placeholder="{{'Enter username' | translate}}" [formControl]="username">
-      <mat-hint>Hint</mat-hint>
+      <mat-error *ngIf="username.invalid && username.dirty">{{'Invalid credentials' | translate}}</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="legacy">
       <mat-label>{{'Password' | translate}}</mat-label>
       <input matInput placeholder="{{'Enter password' | translate}}" type="password" [formControl]="password">
-      <mat-hint>Hint</mat-hint>
+      <mat-error *ngIf="password.invalid && password.dirty">{{'Invalid credentials' | translate}}</mat-error>
     </mat-form-field>
 
     <button [disabled]="buttonLoading" mat-flat-button color="primary" (click)="authenticate()">{{'Login' | translate}}<mat-spinner [diameter]="19" *ngIf="buttonLoading" class="absolute-loading-spinner"></mat-spinner></button>

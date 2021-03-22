@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {DatabaseService} from "../database.service";
 import {FormControl} from "@angular/forms";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -14,31 +15,34 @@ export class LoginComponent implements OnInit {
   public username = new FormControl('');
   public password = new FormControl('');
 
-  constructor(private database: DatabaseService) {
+  constructor(private database: DatabaseService, private router: Router) {
   }
 
   public ngOnInit(): void {
-    this.database.checkToken().subscribe(
-      data => {
-        if(data.code == 401) {
-          this.globalLoading = false;
-        }
-      }
-    )
-  }
-
-  public authenticate(): void {
-    this.buttonLoading = true;
-    this.database.authenticate(this.username.value, this.password.value).subscribe(
+    this.database.authentication.subscribe(
       data => {
         this.buttonLoading = false;
-        console.log(data)
-        localStorage.setItem('userToken', data.token);
+        if (data.code === 200) {
+          localStorage.setItem('userToken', data.token);
+          this.router.navigate(['/calendar']);
+        } else {
+          if (this.username.dirty) {
+            this.username.setErrors({});
+            this.password.setErrors({});
+          }
+          this.globalLoading = false;
+        }
       },
       error => {
         this.buttonLoading = false;
         console.log(error)
       }
     );
+    this.database.checkIfAuthenticated();
+  }
+
+  public authenticate(): void {
+    this.buttonLoading = true;
+    this.database.authenticate(this.username.value, this.password.value);
   }
 }
