@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,9 +18,11 @@ Route::get('/unauthorized', function () {
     return response(['error' => 'Unauthorized', 'code' => 401], 401)->header('Content-Type', 'text/json');
 })->name('unauthorized');
 
-Route::get('/token-check', function () {
-   return response()->json(['valid' => auth()->check()]);
-});
+
+    Route::get('/token-check', function () {
+        return response()->json(['valid' => Auth::guard('api')->check()]);
+    });
+
 
 Route::group(['prefix' => 'users', 'middleware' => 'auth:api'], function () {
     Route::get('/', 'App\Http\Controllers\Users\UserController@index');

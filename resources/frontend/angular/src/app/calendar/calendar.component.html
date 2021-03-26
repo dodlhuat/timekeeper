@@ -1,1 +1,9 @@
-<p>calendar works!</p>
+<mat-card>
+<div class="header">
+  <div class="day" *ngFor="let day of days">
+    <span class="day_name">{{day.name_short}}</span><br>
+    <span class="day_number">{{day.number}}</span>
+  </div>
+</div>
+<div class="content"></div>
+</mat-card>
