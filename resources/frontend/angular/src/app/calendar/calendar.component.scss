@@ -1,0 +1,98 @@
+@import "../../styles";
+
+.calendar_wrapper {
+  display: grid;
+  grid-template-columns: 5.5% 13.5% 13.5% 13.5% 13.5% 13.5% 13.5% 13.5%;
+  grid-template-rows: 100px;
+
+  .day {
+    text-align: center;
+  }
+
+  .day.monday {
+    grid-column: 2/2;
+  }
+
+  .day.tuesday {
+    grid-column: 3/3;
+  }
+
+  .day.wednesday {
+    grid-column: 4/4;
+  }
+
+  .day.thursday {
+    grid-column: 5/5;
+  }
+
+  .day.friday {
+    grid-column: 6/6;
+  }
+
+  .day.saturday {
+    grid-column: 7/7;
+  }
+
+  .day.sunday {
+    grid-column: 8/8;
+  }
+
+  $grid-rows: 24;
+  $grid-columns: 8;
+  @for $i from 1 through $grid-rows {
+    .day:nth-of-type(n + #{$grid-columns * $i + 1}):nth-of-type(-n + #{$grid-columns * ($i + 1)}) {
+      grid-row: $i+1;
+    }
+  }
+
+
+  .day.today {
+    .day_name {
+      color: mat-color($angular-primary);
+    }
+
+    .day_number {
+      background: mat-color($angular-primary);
+      color: white;
+      border-radius: 36px;
+      height: 36px;
+      width: 36px;
+      font-size: 20px;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+  .day_number {
+    font-weight: bold;
+    font-size: 25px;
+  }
+
+  .day_element {
+    display: block;
+    width: 100%;
+  }
+
+  section {
+    position: relative;
+  }
+
+  section.primary {
+    background: mat-color($angular-primary);
+    grid-column: 4;
+    grid-row: 2/span 6;
+  }
+
+  section.warn {
+    background: mat-color($angular-warn);
+    grid-column: 3;
+    grid-row: 2/span 8;
+  }
+}
+
+.dark-theme .calendar_wrapper section {
+  background: red;
+}

@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {User} from "./shared/user.model";
-import {BehaviorSubject, Observable, Subscription} from "rxjs";
+import {BehaviorSubject} from "rxjs";
+import {ApiModel, modelEndpoints, ModelType, SearchParameters} from "./shared/global.declarations";
+import {map} from "rxjs/operators";
 
-// TODO: move to file
-class SearchParameters {
-  public id?: number;
+export type ApiResponse = {
+  data: [] | {}
 }
 
 @Injectable({
@@ -21,8 +21,14 @@ export class DatabaseService {
   constructor(private http: HttpClient) {
   }
 
+  /**
+   * Authenticate
+   *
+   * @param email
+   * @param password
+   */
   public authenticate(email: string, password: string) {
-    this.http.post<{token: string}>(window.location.protocol + "//" + window.location.hostname + ":8000/api/login", {
+    this.http.post<{ token: string }>(window.location.protocol + "//" + window.location.hostname + ":8000/api/login", {
       email,
       password
     }, this.httpOptions)
@@ -36,11 +42,14 @@ export class DatabaseService {
         });
   }
 
+  /**
+   * Check If Authenticated
+   */
   public checkIfAuthenticated() {
     if (localStorage.getItem('userToken') !== null) {
       let token = localStorage.getItem('userToken')!;
       this.httpOptions.headers = this.httpOptions.headers.append('Authorization', 'Bearer ' + token);
-      this.http.get<{valid: boolean}>(window.location.protocol + "//" + window.location.hostname + ":8000/api/token-check", this.httpOptions).subscribe(
+      this.http.get<{ valid: boolean }>(window.location.protocol + "//" + window.location.hostname + ":8000/api/token-check", this.httpOptions).subscribe(
         (data) => {
           if (data.valid) {
             this.authentication.next({code: 200, token: token});
@@ -54,26 +63,42 @@ export class DatabaseService {
     }
   }
 
-  public getModel(model: any, params?: SearchParameters) {
-    // get
+  /**
+   * Get
+   *
+   * load a given model with optional parameters
+   *
+   * @param model
+   * @param params
+   */
+  public get<T extends ApiModel>(model: ModelType<T>, params?: SearchParameters) {
     let token = localStorage.getItem('userToken');
+    this.httpOptions.headers = this.httpOptions.headers.append('Authorization', 'Bearer ' + token);
     let parameters = {
       ...this.httpOptions,
-      ...params,
-      token
+      ...params
     }
-    this.http.get(window.location.protocol + "//" + window.location.hostname + ":8000/api/" + this.getAPIEndpoint(model, {id: 1}), parameters).subscribe(
-      user => console.log(user)
-    );
+    return this.http.get(DatabaseService.getAPIEndpoint(model.name, params), parameters).pipe(
+      map((data) => {
+        const apiResponse = data as ApiResponse;
+        return this.convertToModel(apiResponse, model)
+      })
+    )
   }
 
-  private getAPIEndpoint(model: string, params?: { id: number }): string {
-    // todo: das muss irgendwie besser gehen
-    let endpoint = '';
-    if (model === 'User') {
-      endpoint += 'users'
-      if (params && params.id) endpoint += '/' + params.id;
-    }
-    return endpoint;
+  private static getAPIEndpoint(model: string, params?: SearchParameters): string {
+    let endpoint = modelEndpoints[model.toLowerCase()];
+    if (params && params.filter && params.filter.id) endpoint += '/' + params.filter.id;
+    return window.location.protocol + "//" + window.location.hostname + ":8000/api/" + endpoint;
+  }
+
+  private convertToModel<T extends ApiModel>(response: ApiResponse, model: ModelType<T>) {
+    // array of objects
+    const responseArray: {}[] = (Array.isArray(response.data)) ? response.data : [response.data];
+    return responseArray.map(
+      (modelData) => {
+        return modelData as T;
+      }
+    )
   }
 }

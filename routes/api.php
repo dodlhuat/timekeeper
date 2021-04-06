@@ -32,12 +32,12 @@ Route::group(['prefix' => 'users', 'middleware' => 'auth:api'], function () {
     Route::get('/{id}', 'App\Http\Controllers\Users\UserController@show');
 });
 
-Route::group(['prefix' => 'user-roles', 'middleware' => 'auth:api'], function () {
+Route::group(['prefix' => 'user-roles', 'middleware' => ['auth:api', 'cors']], function () {
     Route::get('/', 'App\Http\Controllers\Users\UserRoleController@index');
     Route::get('/{id}', 'App\Http\Controllers\Users\UserRoleController@show');
 });
 
-Route::group(['prefix' => 'actions', 'middleware' => 'auth:api'], function () {
+Route::group(['prefix' => 'actions', 'middleware' => ['auth:api', 'cors']], function () {
     Route::get('/', 'App\Http\Controllers\Users\ActionController@index');
     Route::get('/{id}', 'App\Http\Controllers\Users\ActionController@show');
 });

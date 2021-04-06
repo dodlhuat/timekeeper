@@ -9,13 +9,13 @@ export class CalendarService {
   constructor() { }
 
   public dayNames = [
-    {short: 'MO', full: 'Montag'},
-    {short: 'DI', full: 'Dienstag'},
-    {short: 'MI', full: 'Mittwoch'},
-    {short: 'DO', full: 'Donnerstag'},
-    {short: 'FR', full: 'Freitag'},
-    {short: 'SA', full: 'Samstag'},
-    {short: 'SO', full: 'Sonntag'},
+    {short: 'MO', full: 'Montag', css: 'monday'},
+    {short: 'DI', full: 'Dienstag', css: 'tuesday'},
+    {short: 'MI', full: 'Mittwoch', css: 'wednesday'},
+    {short: 'DO', full: 'Donnerstag', css: 'thursday'},
+    {short: 'FR', full: 'Freitag', css: 'friday'},
+    {short: 'SA', full: 'Samstag', css: 'saturday'},
+    {short: 'SO', full: 'Sonntag', css: 'sunday'},
   ];
 
   public getWeek(): WeekDay[] {
@@ -60,6 +60,7 @@ export class CalendarService {
           month_number,
           name_short: day.short,
           name_full: day.full,
+          name_css: day.css,
           year,
           today
         }
