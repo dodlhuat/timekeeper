@@ -23,3 +23,33 @@ function transformerClass($model): AbstractBaseTransformer {
 
     return new $transformerName;
 }
+
+/**
+ * Resource Key
+ *
+ * Returns the resouce key related to the input model
+ *
+ * @param $model
+ * @return string|string[]
+ */
+function resourceKey($model)
+{
+    if (!$model || ($model instanceof Collection && $model->isEmpty())) {
+        return '';
+    }
+
+    $tableName = '';
+    if ($model instanceof Collection) {
+        if ($model->first()) {
+            $tableName = $model->first()->getTable();
+        }
+    } else {
+        if ($model instanceof Model) {
+            $tableName = $model->getTable();
+        } else {
+            $tableName = app($model)->getTable();
+        }
+    }
+
+    return str_replace('_', '-', $tableName);
+}

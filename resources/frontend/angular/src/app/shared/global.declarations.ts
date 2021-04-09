@@ -30,6 +30,12 @@ export class ApiModel {
   public id!: number;
 }
 
+export type TimeElement = {
+  time: string;
+  hours: number;
+  minutes: number
+}
+
 export type SearchParameters = {
   include?: string[],
   filter: { [key: string]: string | number },

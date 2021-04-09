@@ -15,8 +15,8 @@ class TrackedWorkingTime extends Model
         return $this->belongsToMany(User::class);
     }
 
-    public function type()
+    public function workType()
     {
-        return $this->belongsToMany(WorkType::class);
+        return $this->belongsTo(WorkType::class, 'type_id');
     }
 }

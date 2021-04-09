@@ -9,5 +9,5 @@ class UserTransformer extends AbstractBaseTransformer
 {
     protected $attributes = ['firstname', 'lastname'];
 
-    protected $availableIncludes = ['user-roles'];
+    protected $availableIncludes = ['user-roles', 'tracked-working-times', 'absences', 'holiday-requests', 'working-times'];
 }

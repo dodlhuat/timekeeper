@@ -42,6 +42,21 @@ Route::group(['prefix' => 'actions', 'middleware' => ['auth:api', 'cors']], func
     Route::get('/{id}', 'App\Http\Controllers\Users\ActionController@show');
 });
 
+Route::group(['prefix' => 'tracked-working-times', 'middleware' => ['auth:api']], function () {
+    Route::get('/', 'App\Http\Controllers\Users\TrackedWorkingTimeController@index');
+    Route::get('/{id}', 'App\Http\Controllers\Users\TrackedWorkingTimeController@show');
+});
+
+Route::group(['prefix' => 'work-types', 'middleware' => ['auth:api']], function () {
+    Route::get('/', 'App\Http\Controllers\Types\WorkTypeController@index');
+    Route::get('/{id}', 'App\Http\Controllers\Types\WorkTypeController@show');
+});
+
+Route::group(['prefix' => 'working-times', 'middleware' => ['auth:api']], function () {
+    Route::get('/', 'App\Http\Controllers\Users\WorkingTimeController@index');
+    Route::get('/{id}', 'App\Http\Controllers\Users\WorkingTimeController@show');
+});
+
 /**
  * Authentication Routes
  */

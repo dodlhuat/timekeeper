@@ -1,6 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {CalendarService} from "../calendar.service";
-import {WeekDay} from "../shared/global.declarations";
+import {TimeElement, WeekDay} from "../shared/global.declarations";
 import {DatabaseService} from "../database.service";
 import {User} from "../shared/user.model";
 
@@ -10,17 +10,63 @@ import {User} from "../shared/user.model";
   styleUrls: ['./calendar.component.scss']
 })
 
-export class CalendarComponent implements OnInit {
+export class CalendarComponent implements OnInit, AfterViewInit {
   public days: WeekDay[] = [];
-  public hours = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
+  public scrollBarWidth = 0;
+  public fullDayTime: TimeElement[] = [];
+  @ViewChild('scrollingcontainer') scrollElement!: ElementRef;
 
-  constructor(private calendar: CalendarService, private database: DatabaseService) {}
+  constructor(private calendar: CalendarService, private database: DatabaseService) {
+  }
 
   ngOnInit(): void {
+    this.setUpDayTime();
     this.days = this.calendar.getWeek();
+    this.measureScrollbarWidth();
 
-    this.database.get<User>(User).subscribe((users) => {
-      console.log(users);
+    // TODO: this is only testing output!!!
+    this.database.get<User>(User, {filter: {id: 1}, include: ['tracked-working-times']}).subscribe((users) => {
+      users.map(
+        (user) => {
+          console.log(user);
+          user["user-roles"]?.map(
+            (userrole) => {
+              console.log(userrole);
+            }
+          )
+        }
+      )
     });
+  }
+
+  private measureScrollbarWidth() {
+    // Add temporary box to wrapper
+    let scrollbox = document.createElement('div');
+    // Make box scrollable
+    scrollbox.style.overflow = 'scroll';
+    // Append box to document
+    document.body.appendChild(scrollbox);
+    // Measure inner width of box
+    this.scrollBarWidth = scrollbox.offsetWidth - scrollbox.clientWidth;
+    // Remove box
+    document.body.removeChild(scrollbox);
+  }
+
+  get scrollBarWidthInPx() {
+    return this.scrollBarWidth + 'px';
+  }
+
+  ngAfterViewInit(): void {
+    this.scrollElement.nativeElement.scroll({
+      top: 250
+    });
+  }
+
+  private setUpDayTime() {
+    for (let i = 0; i < 24; i++) {
+      const addition = (i < 10) ? '0' : '';
+      this.fullDayTime.push({time: addition + i + ':' + '00', hours: i, minutes: 0});
+      this.fullDayTime.push({time: addition + i + ':' + '30', hours: i, minutes: 30});
+    }
   }
 }

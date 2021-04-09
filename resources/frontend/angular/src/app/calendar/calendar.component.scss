@@ -1,12 +1,26 @@
 @import "../../styles";
 
+.card-height-100 {
+  // as cards have double the gap as padding
+  height: calc(100% - #{4 * $gap});
+}
+
+.full-height {
+  height: calc(100% - #{7 * $gap});
+  overflow: auto;
+}
+
+.calendar-header {
+  border-bottom: 1px solid lightgrey;
+}
+
 .calendar_wrapper {
   display: grid;
   grid-template-columns: 5.5% 13.5% 13.5% 13.5% 13.5% 13.5% 13.5% 13.5%;
-  grid-template-rows: 100px;
 
   .day {
     text-align: center;
+    padding: 8px;
   }
 
   .day.monday {
@@ -37,7 +51,12 @@
     grid-column: 8/8;
   }
 
-  $grid-rows: 24;
+  // first row
+  .day:nth-of-type(n + 1):nth-of-type(-n + 8) {
+    grid-row: 1;
+  }
+  // all other rows
+  $grid-rows: 48;
   $grid-columns: 8;
   @for $i from 1 through $grid-rows {
     .day:nth-of-type(n + #{$grid-columns * $i + 1}):nth-of-type(-n + #{$grid-columns * ($i + 1)}) {
@@ -72,24 +91,32 @@
   }
 
   .day_element {
-    display: block;
-    width: 100%;
+    border: solid 1px lightgrey;
+    height: 24px;
+    padding: 0;
   }
 
-  section {
-    position: relative;
+  .hour {
+    line-height: 24px;
+    font-size: smaller;
   }
 
+  .day_element.even {
+    border-bottom-color: lighten(lightgrey, 30);
+  }
+
+  // working time entry
   section.primary {
     background: mat-color($angular-primary);
     grid-column: 4;
-    grid-row: 2/span 6;
+    grid-row: 1/span 8;
   }
 
+  // break entry
   section.warn {
     background: mat-color($angular-warn);
-    grid-column: 3;
-    grid-row: 2/span 8;
+    grid-column: 4;
+    grid-row: 3/span 2;
   }
 }
 

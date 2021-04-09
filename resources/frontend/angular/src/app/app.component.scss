@@ -1,3 +1,5 @@
+@import "../styles";
+
 .container {
   height: 100%;
   display: flex;
@@ -8,11 +10,13 @@
   position: absolute;
   top: 0;
   justify-content: space-between;
+  height: 60px;
 }
 
 .content_container {
-  margin-top: 76px;
   width: 100%;
-  margin-left: 12px;
-  margin-right: 12px;
+  margin: $gap;
+  height: calc(100vh - #{60 + 2 * $gap});
+  top: 60px;
+  position: relative;
 }

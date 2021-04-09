@@ -11,6 +11,6 @@ class WorkType extends Model
     use HasFactory;
 
     public function trackedWorkingTimes() {
-        return $this->belongsToMany(TrackedWorkingTime::class);
+        return $this->hasMany(TrackedWorkingTime::class, 'type_id');
     }
 }

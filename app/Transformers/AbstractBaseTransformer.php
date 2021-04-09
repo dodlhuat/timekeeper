@@ -3,6 +3,13 @@
 namespace App\Transformers;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Collection;
 use League\Fractal\TransformerAbstract;
 
 abstract class AbstractBaseTransformer extends TransformerAbstract {
@@ -25,6 +32,7 @@ abstract class AbstractBaseTransformer extends TransformerAbstract {
         $finalAttributes = [];
         // always add id
         $finalAttributes['id'] = (int)$model->id;
+        $finalAttributes['visible'] = $model->deleted_at == null;
         $this->addAttributes($model, $finalAttributes);
         return $finalAttributes;
     }
@@ -50,8 +58,31 @@ abstract class AbstractBaseTransformer extends TransformerAbstract {
             $method = lcfirst(str_replace('include', '', $name));
 
 
-            $collectionData = $model->$method;
-            return $this->collection($collectionData, transformerClass($collectionData));
+            $relationResponse = $model->{$method}();
+
+            // get data via magic property if response of type MorphTo
+            if ($relationResponse instanceof MorphTo) {
+                $relationResponse = $model->{$method};
+            } elseif ($relationResponse instanceof BelongsTo || $relationResponse instanceof HasOne || $relationResponse instanceof MorphOne || $relationResponse instanceof HasOneThrough) {
+                // item returned - call first
+                $relationResponse = $relationResponse->first();
+            } elseif ($relationResponse instanceof Relation) {
+                // collection return - call get
+                $relationResponse = $relationResponse->get();
+            }
+
+            if ($relationResponse instanceof Collection) {
+                return $this->collection($relationResponse, transformerClass($relationResponse), resourceKey($relationResponse));
+
+                // input is item
+            } else {
+                // dont show relation if element not found
+                if (!$relationResponse) {
+                    return $this->null();
+                }
+                return $this->item($relationResponse, transformerClass($relationResponse), resourceKey($relationResponse));
+            }
+
         }
     }
 }

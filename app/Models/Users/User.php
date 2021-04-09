@@ -46,4 +46,24 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(UserRole::class);
     }
+
+    public function workingTimes()
+    {
+        return $this->belongsToMany(WorkingTime::class);
+    }
+
+    public function trackedWorkingTimes()
+    {
+        return $this->hasMany(TrackedWorkingTime::class);
+    }
+
+    public function absences()
+    {
+        return $this->belongsToMany(Absence::class);
+    }
+
+    public function holidayRequests()
+    {
+        return $this->belongsToMany(HolidayRequest::class);
+    }
 }

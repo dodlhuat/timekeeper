@@ -1,21 +1,26 @@
-<mat-card *ngIf="!globalLoading">
-  <mat-card-header>
-    <mat-card-title>{{'Login to Timekeeper' | translate}}</mat-card-title>
-  </mat-card-header>
-  <mat-card-content class="flex-container">
-    <mat-form-field appearance="legacy">
-      <mat-label>Username</mat-label>
-      <input matInput placeholder="{{'Enter username' | translate}}" [formControl]="username">
-      <mat-error *ngIf="username.invalid && username.dirty">{{'Invalid credentials' | translate}}</mat-error>
-    </mat-form-field>
+<div class="flex-container">
+  <mat-card *ngIf="!globalLoading" class="login-card">
+    <mat-card-header>
+      <mat-card-title>{{'Login to Timekeeper' | translate}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="flex-container">
+      <mat-form-field appearance="legacy">
+        <mat-label>Username</mat-label>
+        <input matInput placeholder="{{'Enter username' | translate}}" [formControl]="username">
+        <mat-error *ngIf="username.invalid && username.dirty">{{'Invalid credentials' | translate}}</mat-error>
+      </mat-form-field>
 
-    <mat-form-field appearance="legacy">
-      <mat-label>{{'Password' | translate}}</mat-label>
-      <input matInput placeholder="{{'Enter password' | translate}}" type="password" [formControl]="password">
-      <mat-error *ngIf="password.invalid && password.dirty">{{'Invalid credentials' | translate}}</mat-error>
-    </mat-form-field>
+      <mat-form-field appearance="legacy">
+        <mat-label>{{'Password' | translate}}</mat-label>
+        <input matInput placeholder="{{'Enter password' | translate}}" type="password" [formControl]="password">
+        <mat-error *ngIf="password.invalid && password.dirty">{{'Invalid credentials' | translate}}</mat-error>
+      </mat-form-field>
 
-    <button [disabled]="buttonLoading" mat-flat-button color="primary" (click)="authenticate()">{{'Login' | translate}}<mat-spinner [diameter]="19" *ngIf="buttonLoading" class="absolute-loading-spinner"></mat-spinner></button>
-  </mat-card-content>
-</mat-card>
-<mat-spinner *ngIf="globalLoading"></mat-spinner>
+      <button [disabled]="buttonLoading" mat-flat-button color="primary"
+              (click)="authenticate()">{{'Login' | translate}}
+        <mat-spinner [diameter]="19" *ngIf="buttonLoading" class="absolute-loading-spinner"></mat-spinner>
+      </button>
+    </mat-card-content>
+  </mat-card>
+  <div class="spinner-container" *ngIf="globalLoading"><mat-spinner></mat-spinner></div>
+</div>

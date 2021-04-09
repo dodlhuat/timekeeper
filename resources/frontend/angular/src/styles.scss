@@ -29,6 +29,8 @@ $dark-theme:   mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
   @include angular-material-theme($dark-theme);
 }
 
+$gap: 8px;
+
 
 html, body {
   height: 100%;
@@ -37,4 +39,8 @@ html, body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.mat-card {
+  padding: #{2 * $gap};
 }

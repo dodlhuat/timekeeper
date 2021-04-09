@@ -74,9 +74,10 @@ export class DatabaseService {
   public get<T extends ApiModel>(model: ModelType<T>, params?: SearchParameters) {
     let token = localStorage.getItem('userToken');
     this.httpOptions.headers = this.httpOptions.headers.append('Authorization', 'Bearer ' + token);
+    const additionalParams = DatabaseService.getAPIParameters(params);
     let parameters = {
       ...this.httpOptions,
-      ...params
+      params: additionalParams
     }
     return this.http.get(DatabaseService.getAPIEndpoint(model.name, params), parameters).pipe(
       map((data) => {
@@ -92,12 +93,32 @@ export class DatabaseService {
     return window.location.protocol + "//" + window.location.hostname + ":8000/api/" + endpoint;
   }
 
+  private static getAPIParameters(params: SearchParameters | undefined): {} | {include: string} {
+    if (params && params.include) {
+      return {include: params.include.join(',')}
+    }
+    return {};
+  }
+
   private convertToModel<T extends ApiModel>(response: ApiResponse, model: ModelType<T>) {
     // array of objects
     const responseArray: {}[] = (Array.isArray(response.data)) ? response.data : [response.data];
     return responseArray.map(
-      (modelData) => {
-        return modelData as T;
+      (modelData: {[key: string]: string}) => {
+
+        let responseData: {[key: string]: string | []} = {};
+        for (const k in modelData) {
+          if (typeof modelData[k] === 'object' && modelData[k] !== null) {
+            // these are includes
+            // @ts-ignore
+            let includes = modelData[k] as {data: []};
+            responseData[k] = includes.data;
+          } else {
+            responseData[k] = modelData[k];
+          }
+        }
+        // needs to be converted to unknown first
+        return responseData as unknown as T;
       }
     )
   }

@@ -8,7 +8,5 @@ class TrackedWorkingTimeTransformer extends AbstractBaseTransformer
 {
     protected $attributes = ['start', 'end'];
 
-    protected $availableIncludes = ['users'];
-
-    protected $defaultIncludes = ['type'];
+    protected $availableIncludes = ['users', 'work-type'];
 }

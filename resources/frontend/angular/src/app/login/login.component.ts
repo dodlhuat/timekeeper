@@ -25,11 +25,13 @@ export class LoginComponent implements OnInit {
         if (data.code === 200) {
           localStorage.setItem('userToken', data.token);
           this.router.navigate(['/calendar']);
-        } else {
+        } else if (data.code === 404) {
+          // 404 is when no check has done so far
           if (this.username.dirty) {
             this.username.setErrors({});
             this.password.setErrors({});
           }
+        } else {
           this.globalLoading = false;
         }
       },

@@ -1,6 +1,21 @@
 @import "../../assets/styles/global";
+
 .flex-container {
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.spinner-container {
+  height: 80vh;
+  display: flex;
+}
+
+.login-card {
+  width: 300px;
+  align-self: center;
+}
+
+mat-spinner {
+  margin: auto;
 }
