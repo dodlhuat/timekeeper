@@ -22,6 +22,9 @@ import {CommonModule} from "@angular/common";
 import { CalendarComponent } from './calendar/calendar.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatIconModule} from '@angular/material/icon';
+import { ToolbarComponent } from './toolbar/toolbar.component';
+import {MatSidenavModule} from "@angular/material/sidenav";
+import {MatListModule} from '@angular/material/list';
 
 export function httpTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -33,7 +36,8 @@ export function httpTranslateLoader(http: HttpClient) {
     LoginComponent,
     LanguageSelectorComponent,
     PageNotFoundComponent,
-    CalendarComponent
+    CalendarComponent,
+    ToolbarComponent
   ],
   imports: [
     BrowserModule,
@@ -46,6 +50,8 @@ export function httpTranslateLoader(http: HttpClient) {
     MatToolbarModule,
     MatProgressSpinnerModule,
     HttpClientModule,
+    MatSidenavModule,
+    MatListModule,
     CommonModule,
     TranslateModule.forRoot({
       loader: {

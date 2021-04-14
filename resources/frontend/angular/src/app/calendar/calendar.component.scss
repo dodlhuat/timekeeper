@@ -106,17 +106,30 @@
   }
 
   // working time entry
+  section {
+    font-size: smaller;
+    padding-left: $gap / 2;
+    color: white;
+    line-height: 26px;
+  }
+
   section.primary {
     background: mat-color($angular-primary);
     grid-column: 4;
     grid-row: 1/span 8;
+
+    margin: $gap / 2;
+    border-radius: $gap;
   }
 
   // break entry
   section.warn {
     background: mat-color($angular-warn);
     grid-column: 4;
-    grid-row: 3/span 2;
+    grid-row: 3/span 1;
+
+    margin-left: $gap / 2;
+    margin-right: $gap / 2;
   }
 }
 

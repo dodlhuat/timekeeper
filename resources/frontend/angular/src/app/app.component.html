@@ -1,11 +1,16 @@
 <div class="container">
-  <mat-toolbar class="main-toolbar" *ngIf="router.url !== '/login'">
-    <span>Timekeeper</span>
-    <mat-icon>account_circle</mat-icon>
-  </mat-toolbar>
-  <!-- TODO: move toolbar to a component? and the main content should start under it -->
-
+  <app-toolbar></app-toolbar>
   <div class="content_container">
-    <router-outlet></router-outlet>
+    <mat-drawer-container class="example-container" autosize>
+      <mat-drawer #mainmenu class="example-sidenav" mode="side">
+        <mat-list role="list">
+          <mat-list-item role="listitem"><mat-icon>inbox</mat-icon> Inbox</mat-list-item>
+          <mat-list-item role="listitem"><mat-icon>dashboard</mat-icon> Dashboard</mat-list-item>
+          <mat-list-item role="listitem"><mat-icon>calendar_today</mat-icon> Calendar</mat-list-item>
+          <mat-list-item role="listitem"><mat-icon>event_available</mat-icon> Holiday Planner</mat-list-item>
+        </mat-list>
+      </mat-drawer>
+      <router-outlet></router-outlet>
+    </mat-drawer-container>
   </div>
 </div>

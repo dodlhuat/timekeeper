@@ -1,0 +1,10 @@
+<mat-toolbar class="main-toolbar" *ngIf="router.url !== '/login'">
+   <button mat-icon-button (click)="toggleMenu()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>Timekeeper</span>
+  <span class="spacer"></span>
+  <button mat-icon-button>
+    <mat-icon>account_circle</mat-icon>
+  </button>
+</mat-toolbar>
