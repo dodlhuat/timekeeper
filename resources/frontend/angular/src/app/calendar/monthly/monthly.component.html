@@ -1,0 +1,15 @@
+<mat-card class="card-height-100">
+  <div class="calendar-monthly">
+    <ul class="weekdays">
+      <li *ngFor="let day of days">
+        <div class="day-name">{{day.name_short}}</div>
+      </li>
+    </ul>
+    <div class="clear"></div>
+    <ul class="days">
+      <li *ngFor="let day of month" [class.last-next-month]="day.month_number !== thisMonth">
+        <span [class.active]="day.today">{{day.number}}</span>
+      </li>
+    </ul>
+  </div>
+</mat-card>

@@ -25,6 +25,12 @@ import {MatIconModule} from '@angular/material/icon';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatListModule} from '@angular/material/list';
+import { AddCalendarEntryComponent } from './modals/add-calendar-entry/add-calendar-entry.component';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatMenuModule} from '@angular/material/menu';
+import { WeeklyComponent } from './calendar/weekly/weekly.component';
+import { MonthlyComponent } from './calendar/monthly/monthly.component';
+import { YearlyComponent } from './calendar/yearly/yearly.component';
 
 export function httpTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -37,7 +43,11 @@ export function httpTranslateLoader(http: HttpClient) {
     LanguageSelectorComponent,
     PageNotFoundComponent,
     CalendarComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    AddCalendarEntryComponent,
+    WeeklyComponent,
+    MonthlyComponent,
+    YearlyComponent
   ],
   imports: [
     BrowserModule,
@@ -52,6 +62,8 @@ export function httpTranslateLoader(http: HttpClient) {
     HttpClientModule,
     MatSidenavModule,
     MatListModule,
+    MatDialogModule,
+    MatMenuModule,
     CommonModule,
     TranslateModule.forRoot({
       loader: {

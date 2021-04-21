@@ -8,6 +8,12 @@ export type WeekDay = {
   today: boolean
 }
 
+export type DayName =  {
+  short: string,
+  full: string,
+  class: string
+}
+
 interface iEndpoints {
   [index: string]: string;
 }

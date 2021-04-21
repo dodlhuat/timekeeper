@@ -67,11 +67,11 @@
 
   .day.today {
     .day_name {
-      color: mat-color($angular-primary);
+      color: mat-color($timekeeper-app-accent);
     }
 
     .day_number {
-      background: mat-color($angular-primary);
+      background: mat-color($timekeeper-app-accent);
       color: white;
       border-radius: 36px;
       height: 36px;
@@ -114,7 +114,7 @@
   }
 
   section.primary {
-    background: mat-color($angular-primary);
+    background: mat-color($timekeeper-app-primary);
     grid-column: 4;
     grid-row: 1/span 8;
 
@@ -124,15 +124,11 @@
 
   // break entry
   section.warn {
-    background: mat-color($angular-warn);
+    background: mat-color($timekeeper-app-accent);
     grid-column: 4;
     grid-row: 3/span 1;
 
     margin-left: $gap / 2;
     margin-right: $gap / 2;
   }
-}
-
-.dark-theme .calendar_wrapper section {
-  background: red;
 }

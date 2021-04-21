@@ -1,37 +1,97 @@
-/* You can add global styles to this file, and also import other style files */
 @import '~@angular/material/theming';
 
 @include mat-core();
 
-$angular-primary: mat-palette($mat-teal, 500, 100, 900);
-$angular-accent: mat-palette($mat-pink, A200, A100, A400);
-$angular-warn: mat-palette($mat-red);
-$angular-default-theme: mat-light-theme(
-    (
-      color: (
-        primary: $angular-primary,
-        accent: $angular-accent,
-        warn: $angular-warn,
-      ),
-    )
+$timekeeper-main: (
+  50 : #f2f4f5,
+  100 : #dee4e7,
+  200 : #c8d2d7,
+  300 : #b1bfc6,
+  400 : #a1b2ba,
+  500 : #90a4ae,
+  600 : #889ca7,
+  700 : #7d929d,
+  800 : #738994,
+  900 : #617884,
+  A100 : #f6fcff,
+  A200 : #c3eaff,
+  A400 : #90d8ff,
+  A700 : #76cfff,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #000000,
+    400 : #000000,
+    500 : #000000,
+    600 : #000000,
+    700 : #000000,
+    800 : #000000,
+    900 : #ffffff,
+    A100 : #000000,
+    A200 : #000000,
+    A400 : #000000,
+    A700 : #000000,
+  )
 );
-.light-theme {
-  @include angular-material-theme($angular-default-theme);
-}
+$timekeeper-accent: (
+  50 : #fff3e0,
+  100 : #ffe0b3,
+  200 : #ffcc80,
+  300 : #ffb74d,
+  400 : #ffa726,
+  500 : #ff9800,
+  600 : #ff9000,
+  700 : #ff8500,
+  800 : #ff7b00,
+  900 : #ff6a00,
+  A100 : #ffffff,
+  A200 : #fff7f2,
+  A400 : #ffd6bf,
+  A700 : #ffc5a6,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #000000,
+    400 : #000000,
+    500 : #000000,
+    600 : #000000,
+    700 : #000000,
+    800 : #000000,
+    900 : #000000,
+    A100 : #000000,
+    A200 : #000000,
+    A400 : #000000,
+    A700 : #000000,
+  )
+);
+
+$primary: #90a4ae;
+$primary-light: #c1d5e0;
+$primary-dark: #62757f;
+$primary-text: #000;
+
+$secondary: #ff9800;
+$secondary-light: #ffc947;
+$secondary-dark: #c66900;
+$secondary-text: #000;
 
 
-$dark-primary: mat-palette($mat-blue-grey);
-$dark-accent:  mat-palette($mat-amber, A200, A100, A400);
-$dark-warn:    mat-palette($mat-deep-orange);
-$dark-theme:   mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
+$timekeeper-app-primary: mat-palette($timekeeper-main);
+$timekeeper-app-accent: mat-palette($timekeeper-accent);
+$timekeeper-app-warn: mat-palette($mat-red);
 
-.dark-theme {
-  @include angular-material-theme($dark-theme);
-}
+$candy-app-theme: mat-light-theme((
+  color: (
+    primary: $timekeeper-app-primary,
+    accent: $timekeeper-app-accent,
+    warn: $timekeeper-app-warn,
+  )
+));
+@include angular-material-theme($candy-app-theme);
 
 $gap: 8px;
-
-
 html, body {
   height: 100%;
 }
@@ -43,4 +103,8 @@ body {
 
 .mat-card {
   padding: #{2 * $gap};
+}
+
+.hidden {
+  display: none;
 }

@@ -15,6 +15,12 @@ class AuthController extends Controller {
         $credentials = ['email' => $request->email, 'password' => $request->password];
 
         if (auth()->attempt($credentials)) {
+            $tokens = auth()->user()->tokens;
+            foreach ($tokens as $token) {
+                // remove all old tokens
+                $token->delete();
+            }
+
             $token = auth()->user()->createToken('Timekeeper')->accessToken;
             return response()->json(['token' => $token], 200);
         } else {

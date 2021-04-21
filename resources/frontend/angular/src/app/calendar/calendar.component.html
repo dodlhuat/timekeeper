@@ -10,7 +10,7 @@
   <div class="calendar_wrapper full-height" #scrollingcontainer>
     <ng-container *ngFor="let hour of fullDayTime">
       <div class="hour"><span *ngIf="hour.minutes === 0">{{hour.time}}</span></div>
-      <div class="day {{day.name_css}} day_element" *ngFor="let day of days" [class.odd]="hour.minutes === 30" [class.even]="hour.minutes === 0"></div>
+      <div class="day {{day.name_css}} day_element" *ngFor="let day of days" [class.odd]="hour.minutes === 30" [class.even]="hour.minutes === 0" (click)="showAddEntryModal()"></div>
     </ng-container>
 
     <section class="primary">Office</section>

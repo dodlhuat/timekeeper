@@ -19,15 +19,20 @@ Route::get('/unauthorized', function () {
 })->name('unauthorized');
 
 
-    Route::get('/token-check', function () {
-        return response()->json(['valid' => Auth::guard('api')->check()]);
-    });
+Route::get('/token-check', function () {
+    return response()->json([
+        'valid' => Auth::guard('api')->check()
+    ]);
+});
 
 
 Route::group(['prefix' => 'users', 'middleware' => 'auth:api'], function () {
     Route::get('/', 'App\Http\Controllers\Users\UserController@index');
     Route::get('/current', function () {
-        return ['data' => ['id' => auth()->user()->id]];
+        return ['data' => [
+            'id' => auth()->user()->id,
+            'tokens' => auth()->user()->tokens
+        ]];
     });
     Route::get('/{id}', 'App\Http\Controllers\Users\UserController@show');
 });

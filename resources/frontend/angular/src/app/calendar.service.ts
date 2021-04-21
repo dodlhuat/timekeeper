@@ -1,24 +1,25 @@
-import { Injectable } from '@angular/core';
-import {WeekDay} from "./shared/global.declarations";
+import {Injectable} from '@angular/core';
+import {DayName, TimeElement, WeekDay} from "./shared/global.declarations";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CalendarService {
 
-  constructor() { }
+  constructor() {
+  }
 
-  public dayNames = [
-    {short: 'MO', full: 'Montag', css: 'monday'},
-    {short: 'DI', full: 'Dienstag', css: 'tuesday'},
-    {short: 'MI', full: 'Mittwoch', css: 'wednesday'},
-    {short: 'DO', full: 'Donnerstag', css: 'thursday'},
-    {short: 'FR', full: 'Freitag', css: 'friday'},
-    {short: 'SA', full: 'Samstag', css: 'saturday'},
-    {short: 'SO', full: 'Sonntag', css: 'sunday'},
+  public dayNames: DayName[] = [
+    {short: 'MO', full: 'Montag', class: 'monday'},
+    {short: 'DI', full: 'Dienstag', class: 'tuesday'},
+    {short: 'MI', full: 'Mittwoch', class: 'wednesday'},
+    {short: 'DO', full: 'Donnerstag', class: 'thursday'},
+    {short: 'FR', full: 'Freitag', class: 'friday'},
+    {short: 'SA', full: 'Samstag', class: 'saturday'},
+    {short: 'SO', full: 'Sonntag', class: 'sunday'},
   ];
 
-  public getWeek(): WeekDay[] {
+  public getWeek(date: string = ''): WeekDay[] {
     const now = new Date();
     const lastDayInThisMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
     const lastDayInLastMonth = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
@@ -60,12 +61,84 @@ export class CalendarService {
           month_number,
           name_short: day.short,
           name_full: day.full,
-          name_css: day.css,
+          name_css: day.class,
           year,
           today
         }
       }
     )
     return weekDays;
+  }
+
+  public getMonth(date: string = '', fullWeeks: boolean = true): WeekDay[] {
+    let now: Date;
+    if (date === '') {
+      now = new Date();
+    } else {
+      now = new Date(date);
+    }
+    let weekDays: WeekDay[] = [];
+
+    const lastDayInThisMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    const lastDayInLastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+    const firstDayInMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
+    for (let i = 1; i <= firstDayInMonth.getDay() - 1; i++) {
+      weekDays.push(
+        {
+          month_number: lastDayInLastMonth.getMonth() + 1,
+          today: false,
+          year: lastDayInLastMonth.getFullYear(),
+          name_full: this.dayNames[i - 1].full,
+          name_short: this.dayNames[i - 1].short,
+          number: lastDayInLastMonth.getDate() - (firstDayInMonth.getDay() - i - 1),
+          name_css: this.dayNames[i - 1].class
+        }
+      )
+    }
+    let dayNumber = firstDayInMonth.getDay() - 1;
+    for (let i = 1; i <= lastDayInThisMonth.getDate(); i++) {
+      if (dayNumber >= 28) dayNumber -= 28;
+      else if (dayNumber >= 21) dayNumber -= 21;
+      else if (dayNumber >= 14) dayNumber -= 14;
+      else if (dayNumber >= 7) dayNumber -= 7;
+      weekDays.push(
+        {
+          month_number: lastDayInThisMonth.getMonth() + 1,
+          today: now.getDate() === i,
+          year: lastDayInThisMonth.getFullYear(),
+          name_full: this.dayNames[dayNumber].full,
+          name_short: this.dayNames[dayNumber].short,
+          number: i,
+          name_css: this.dayNames[dayNumber].class
+        }
+      )
+      dayNumber++;
+    }
+    let nextMonthDay = 1;
+    const month_number = (lastDayInThisMonth.getMonth() + 2 > 12) ? 1 : lastDayInThisMonth.getMonth() + 2;
+    for (let i = lastDayInThisMonth.getDay(); i < 7; i++) {
+      weekDays.push(
+        {
+          month_number,
+          today: false,
+          year: month_number === 1 ? lastDayInLastMonth.getFullYear() + 1 : lastDayInLastMonth.getFullYear(),
+          name_full: this.dayNames[i].full,
+          name_short: this.dayNames[i].short,
+          number: nextMonthDay++,
+          name_css: this.dayNames[i].class
+        }
+      )
+    }
+    return weekDays;
+  }
+
+  public setUpDayTime(fullDayTime: TimeElement[]) {
+    for (let i = 0; i < 24; i++) {
+      const addition = (i < 10) ? '0' : '';
+      fullDayTime.push({time: addition + i + ':' + '00', hours: i, minutes: 0});
+      fullDayTime.push({time: addition + i + ':' + '30', hours: i, minutes: 30});
+    }
+    return fullDayTime;
   }
 }

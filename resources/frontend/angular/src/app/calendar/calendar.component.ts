@@ -3,6 +3,8 @@ import {CalendarService} from "../calendar.service";
 import {TimeElement, WeekDay} from "../shared/global.declarations";
 import {DatabaseService} from "../database.service";
 import {User} from "../shared/user.model";
+import {MatDialog} from "@angular/material/dialog";
+import {AddCalendarEntryComponent} from "../modals/add-calendar-entry/add-calendar-entry.component";
 
 @Component({
   selector: 'app-calendar',
@@ -16,7 +18,7 @@ export class CalendarComponent implements OnInit, AfterViewInit {
   public fullDayTime: TimeElement[] = [];
   @ViewChild('scrollingcontainer') scrollElement!: ElementRef;
 
-  constructor(private calendar: CalendarService, private database: DatabaseService) {
+  constructor(private calendar: CalendarService, private database: DatabaseService, public dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -68,5 +70,17 @@ export class CalendarComponent implements OnInit, AfterViewInit {
       this.fullDayTime.push({time: addition + i + ':' + '00', hours: i, minutes: 0});
       this.fullDayTime.push({time: addition + i + ':' + '30', hours: i, minutes: 30});
     }
+  }
+
+  public showAddEntryModal() {
+    const dialogRef = this.dialog.open(AddCalendarEntryComponent, {
+      width: '250px',
+      data: {name: 'eins'}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      console.log(result);
+    });
   }
 }
