@@ -14,6 +14,12 @@ export type DayName =  {
   class: string
 }
 
+export type MonthName =  {
+  short: string,
+  full: string,
+  number: number
+}
+
 interface iEndpoints {
   [index: string]: string;
 }

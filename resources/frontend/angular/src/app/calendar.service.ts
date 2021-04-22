@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {DayName, TimeElement, WeekDay} from "./shared/global.declarations";
+import {DayName, MonthName, TimeElement, WeekDay} from "./shared/global.declarations";
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +17,21 @@ export class CalendarService {
     {short: 'FR', full: 'Freitag', class: 'friday'},
     {short: 'SA', full: 'Samstag', class: 'saturday'},
     {short: 'SO', full: 'Sonntag', class: 'sunday'},
+  ];
+
+  public monthNames: MonthName[] = [
+    {short: 'JAN', full: 'Jänner', number: 1},
+    {short: 'FEB', full: 'Februar', number: 2},
+    {short: 'MAR', full: 'März', number: 3},
+    {short: 'APR', full: 'April', number: 4},
+    {short: 'MAI', full: 'Mai', number: 5},
+    {short: 'JUN', full: 'Juni', number: 6},
+    {short: 'JUL', full: 'Juli', number: 7},
+    {short: 'AUG', full: 'August', number: 8},
+    {short: 'SEP', full: 'September', number: 9},
+    {short: 'OKT', full: 'Oktober', number: 10},
+    {short: 'NOV', full: 'November', number: 11},
+    {short: 'DEZ', full: 'Dezember', number: 12},
   ];
 
   public getWeek(date: string = ''): WeekDay[] {
@@ -72,6 +87,7 @@ export class CalendarService {
 
   public getMonth(date: string = '', fullWeeks: boolean = true): WeekDay[] {
     let now: Date;
+    const today: Date = new Date();
     if (date === '') {
       now = new Date();
     } else {
@@ -83,20 +99,22 @@ export class CalendarService {
     const lastDayInLastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
     const firstDayInMonth = new Date(now.getFullYear(), now.getMonth(), 1);
 
-    for (let i = 1; i <= firstDayInMonth.getDay() - 1; i++) {
-      weekDays.push(
-        {
-          month_number: lastDayInLastMonth.getMonth() + 1,
-          today: false,
-          year: lastDayInLastMonth.getFullYear(),
-          name_full: this.dayNames[i - 1].full,
-          name_short: this.dayNames[i - 1].short,
-          number: lastDayInLastMonth.getDate() - (firstDayInMonth.getDay() - i - 1),
-          name_css: this.dayNames[i - 1].class
-        }
-      )
+    if (fullWeeks) {
+      for (let i = 1; i <= this.reIndexDay(firstDayInMonth.getDay()); i++) {
+        weekDays.push(
+          {
+            month_number: lastDayInLastMonth.getMonth() + 1,
+            today: false,
+            year: lastDayInLastMonth.getFullYear(),
+            name_full: this.dayNames[i - 1].full,
+            name_short: this.dayNames[i - 1].short,
+            number: lastDayInLastMonth.getDate() - (this.reIndexDay(firstDayInMonth.getDay()) - i),
+            name_css: this.dayNames[i - 1].class
+          }
+        )
+      }
     }
-    let dayNumber = firstDayInMonth.getDay() - 1;
+    let dayNumber = this.reIndexDay(firstDayInMonth.getDay());
     for (let i = 1; i <= lastDayInThisMonth.getDate(); i++) {
       if (dayNumber >= 28) dayNumber -= 28;
       else if (dayNumber >= 21) dayNumber -= 21;
@@ -105,7 +123,7 @@ export class CalendarService {
       weekDays.push(
         {
           month_number: lastDayInThisMonth.getMonth() + 1,
-          today: now.getDate() === i,
+          today: today.getDate() === i && today.getMonth() === now.getMonth(),
           year: lastDayInThisMonth.getFullYear(),
           name_full: this.dayNames[dayNumber].full,
           name_short: this.dayNames[dayNumber].short,
@@ -115,22 +133,34 @@ export class CalendarService {
       )
       dayNumber++;
     }
-    let nextMonthDay = 1;
-    const month_number = (lastDayInThisMonth.getMonth() + 2 > 12) ? 1 : lastDayInThisMonth.getMonth() + 2;
-    for (let i = lastDayInThisMonth.getDay(); i < 7; i++) {
-      weekDays.push(
-        {
-          month_number,
-          today: false,
-          year: month_number === 1 ? lastDayInLastMonth.getFullYear() + 1 : lastDayInLastMonth.getFullYear(),
-          name_full: this.dayNames[i].full,
-          name_short: this.dayNames[i].short,
-          number: nextMonthDay++,
-          name_css: this.dayNames[i].class
-        }
-      )
+    if (fullWeeks) {
+      let nextMonthDay = 1;
+      const month_number = (lastDayInThisMonth.getMonth() + 2 > 12) ? 1 : lastDayInThisMonth.getMonth() + 2;
+      for (let i = this.reIndexDay(lastDayInThisMonth.getDay()); i < 7; i++) {
+        weekDays.push(
+          {
+            month_number,
+            today: false,
+            year: month_number === 1 ? lastDayInLastMonth.getFullYear() + 1 : lastDayInLastMonth.getFullYear(),
+            name_full: this.dayNames[i].full,
+            name_short: this.dayNames[i].short,
+            number: nextMonthDay++,
+            name_css: this.dayNames[i].class
+          }
+        )
+      }
     }
     return weekDays;
+  }
+
+  public getYear(): WeekDay[][] {
+    const now = new Date();
+    let year: WeekDay[][] = [];
+    for (let i = 1; i <= 12; i++) {
+      const month = this.getMonth(this.pad(i) + '-' + '01-' + now.getFullYear(), false);
+      year[month[0].month_number] = month;
+    }
+    return year.filter((item) => item !== undefined);
   }
 
   public setUpDayTime(fullDayTime: TimeElement[]) {
@@ -140,5 +170,24 @@ export class CalendarService {
       fullDayTime.push({time: addition + i + ':' + '30', hours: i, minutes: 30});
     }
     return fullDayTime;
+  }
+
+  private pad(num: number, size: number = 2): string {
+    let s = num + "";
+    while (s.length < size) s = "0" + s;
+    return s;
+  }
+
+  /**
+   * Re Index Day
+   *
+   * as days in javascript start with 0 as sunday, reindexing is needed
+   *
+   * @param dayNumber
+   * @private
+   */
+  private reIndexDay(dayNumber: number): number {
+    if (dayNumber === 0) return 7;
+    return dayNumber - 1;
   }
 }

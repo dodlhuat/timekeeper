@@ -1,0 +1,58 @@
+@import "../../../styles";
+
+.calendar-yearly {
+  position: relative;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+ul.months {
+  width: 100%;
+
+  > li {
+    float: left;
+    width: calc(100% / 12);
+  }
+
+  .month-name {
+    background: mat-color($timekeeper-app-primary, 100);
+    padding-bottom: 4px;
+    padding-top: 4px;
+    text-align: center;
+  }
+
+  ul.days {
+    .day-name {
+      width: 24px;
+      text-align: center;
+      background: mat-color($timekeeper-app-primary, 100);
+    }
+  }
+
+  ul.days div {
+    float: left;
+  }
+
+  ul.days li {
+    height: 24px;
+    line-height: 24px;
+  }
+
+  ul.days li:after {
+    content: '';
+    display: block;
+    clear: both;
+    float: none;
+  }
+}
+
+.months:after {
+  content: '';
+  display: block;
+  clear: both;
+  float: none;
+}

@@ -1,7 +1,18 @@
-<p>yearly works!</p>
-<!--
-alle wochen untereinander
-mo - so
-in der info spalte den monatsnamen in der woche vom ersten
-evtl wochen nummer?
--->
+<mat-card class="card-height-100">
+  <div class="calendar-yearly">
+    <ul class="months">
+      <li *ngFor="let month of year">
+        <ng-container *ngIf="month !== undefined">
+          <div class="month-name">{{monthNames[month[0].month_number - 1].full}}</div>
+          <ul class="days">
+            <li *ngFor="let day of month">
+              <div class="day-name">{{day.name_short | slice:0:1}}</div>
+              <div class="day-number">{{day.number}}</div>
+              <div class="day-content"></div>
+            </li>
+          </ul>
+        </ng-container>
+      </li>
+    </ul>
+  </div>
+</mat-card>
