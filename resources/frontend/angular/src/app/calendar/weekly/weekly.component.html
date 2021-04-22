@@ -1,37 +1,30 @@
 <mat-card class="card-height-100">
   <div class="calendar-weekly">
+
+    <!--
+    als einzelne divs statt der listen
+
+    -->
     <div class="days">
-      <ul>
-        <li *ngFor="let day of days" [class.active]="day.today">
-          <div class="day-name">{{day.name_short}}</div>
-          <div class="day-number">{{day.number}}</div>
-        </li>
-      </ul>
+      <div class="hours"></div>
+      <div *ngFor="let day of days" [class.active]="day.today" class="day-element">
+        <div class="day-name">{{day.name_short}}</div>
+        <div class="day-number">{{day.number}}</div>
+      </div>
     </div>
     <div class="timeline">
-      <ul>
-        <ng-container *ngFor="let hour of fullDayTime">
-          <li>
-            <span *ngIf="hour.minutes === 0">{{hour.time}}</span>
-          </li>
-        </ng-container>
-      </ul>
+      <div class="hours">
+        <div *ngFor="let hour of fullDayTime">
+          <span *ngIf="hour.minutes === 0">{{hour.time}}</span>
+        </div>
+      </div>
+      <div *ngFor="let day of days" class="day-element">
+        <div *ngFor="let hour of fullDayTime" (click)="showAddEntryModal(hour, day)">
+
+        </div>
+      </div>
     </div>
-    <div class="events">
-      <ul>
-        <li *ngFor="let day of days">
-          <!--
-          <ul>
-            <li class="entry-one office event">
-              <div class="content">
-                <span class="time">10:00 - 11:30</span>
-                <span>Office</span>
-              </div>
-            </li>
-          </ul>
-          -->
-        </li>
-      </ul>
-    </div>
+
+
   </div>
 </mat-card>

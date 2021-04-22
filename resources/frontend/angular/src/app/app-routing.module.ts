@@ -9,7 +9,7 @@ import {YearlyComponent} from "./calendar/yearly/yearly.component";
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
-  {path: 'calendar', component: CalendarComponent},
+  {path: 'calendar', component: WeeklyComponent},
   {path: 'login', component: LoginComponent},
   {path: 'calendar/weekly', component: WeeklyComponent},
   {path: 'calendar/monthly', component: MonthlyComponent},

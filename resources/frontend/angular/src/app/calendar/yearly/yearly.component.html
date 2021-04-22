@@ -5,7 +5,7 @@
         <ng-container *ngIf="month !== undefined">
           <div class="month-name">{{monthNames[month[0].month_number - 1].full}}</div>
           <ul class="days">
-            <li *ngFor="let day of month">
+            <li *ngFor="let day of month" class="{{day.name_css}}">
               <div class="day-name">{{day.name_short | slice:0:1}}</div>
               <div class="day-number">{{day.number}}</div>
               <div class="day-content"></div>

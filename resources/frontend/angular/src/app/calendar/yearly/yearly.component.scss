@@ -26,10 +26,18 @@ ul.months {
   }
 
   ul.days {
+    font-size: smaller;
+
     .day-name {
-      width: 24px;
+      width: 20px;
       text-align: center;
       background: mat-color($timekeeper-app-primary, 100);
+    }
+
+    .day-number {
+      background: mat-color($timekeeper-app-primary, 200);
+      width: 24px;
+      text-align: center;
     }
   }
 
@@ -37,9 +45,16 @@ ul.months {
     float: left;
   }
 
-  ul.days li {
-    height: 24px;
-    line-height: 24px;
+  ul.days {
+    li {
+      height: 24px;
+      line-height: 24px;
+      border: 1px solid mat-color($timekeeper-app-primary, 100);
+    }
+
+    li.saturday, li.sunday {
+      background: mat-color($timekeeper-app-primary, 100);
+    }
   }
 
   ul.days li:after {
