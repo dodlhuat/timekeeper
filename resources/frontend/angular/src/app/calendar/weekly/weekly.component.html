@@ -1,10 +1,5 @@
-<mat-card class="card-height-100">
-  <div class="calendar-weekly">
-
-    <!--
-    als einzelne divs statt der listen
-
-    -->
+<div class="calendar-weekly">
+  <mat-card class="card-height-100">
     <div class="days">
       <div class="hours"></div>
       <div *ngFor="let day of days" [class.active]="day.today" class="day-element">
@@ -19,12 +14,17 @@
         </div>
       </div>
       <div *ngFor="let day of days" class="day-element">
-        <div *ngFor="let hour of fullDayTime" (click)="showAddEntryModal(hour, day)">
-
-        </div>
+        <div *ngFor="let hour of fullDayTime" (click)="showAddEntryModal(hour, day)"></div>
       </div>
     </div>
 
-
-  </div>
-</mat-card>
+    <div class="entries">
+      <div *ngFor="let day of days" class="day-element">
+        <div class="entry" *ngIf="day.number === 22">
+          <span>12:00 - 13:30</span>
+          <span>Office</span>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+</div>

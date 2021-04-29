@@ -20,29 +20,32 @@ Route::get('/unauthorized', function () {
 
 
 Route::get('/token-check', function () {
-    return response()->json([
-        'valid' => Auth::guard('api')->check()
-    ]);
+    return response()->json(['valid' => Auth::guard('api')->check()]);
 });
 
-
-Route::group(['prefix' => 'users', 'middleware' => 'auth:api'], function () {
+Route::group(['prefix' => 'users', 'middleware' => ['auth:api']], function () {
     Route::get('/', 'App\Http\Controllers\Users\UserController@index');
     Route::get('/current', function () {
-        return ['data' => [
-            'id' => auth()->user()->id,
-            'tokens' => auth()->user()->tokens
-        ]];
+        return ['data' => ['id' => auth()->user()->id, 'tokens' => auth()->user()->tokens]];
+    });
+    Route::post('/logout', function () {
+        // invalidate - remove all tokens on logout
+        $tokens = auth()->user()->tokens;
+        foreach ($tokens as $token) {
+            // remove all old tokens
+            $token->delete();
+        }
+        return ['logged_out' => true];
     });
     Route::get('/{id}', 'App\Http\Controllers\Users\UserController@show');
 });
 
-Route::group(['prefix' => 'user-roles', 'middleware' => ['auth:api', 'cors']], function () {
+Route::group(['prefix' => 'user-roles', 'middleware' => ['auth:api']], function () {
     Route::get('/', 'App\Http\Controllers\Users\UserRoleController@index');
     Route::get('/{id}', 'App\Http\Controllers\Users\UserRoleController@show');
 });
 
-Route::group(['prefix' => 'actions', 'middleware' => ['auth:api', 'cors']], function () {
+Route::group(['prefix' => 'actions', 'middleware' => ['auth:api']], function () {
     Route::get('/', 'App\Http\Controllers\Users\ActionController@index');
     Route::get('/{id}', 'App\Http\Controllers\Users\ActionController@show');
 });

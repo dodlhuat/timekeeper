@@ -8,8 +8,16 @@
 
 .content_container {
   width: 100%;
-  margin: $gap;
   height: calc(100vh - #{60 + 2 * $gap});
   top: 60px;
   position: relative;
+  display: flex;
+}
+
+.sidenav {
+  display: flex;
+}
+
+.mat-drawer-container {
+  width: 100%;
 }

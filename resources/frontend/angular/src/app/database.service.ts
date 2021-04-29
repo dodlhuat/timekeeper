@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {BehaviorSubject} from "rxjs";
 import {ApiModel, modelEndpoints, ModelType, SearchParameters} from "./shared/global.declarations";
 import {map} from "rxjs/operators";
+import {Router} from "@angular/router";
 
 export type ApiResponse = {
   data: [] | {}
@@ -18,7 +19,7 @@ export class DatabaseService {
   };
   public authentication = new BehaviorSubject<{ token: string, code: number }>({code: 404, token: ''});
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
   }
 
   /**
@@ -93,7 +94,7 @@ export class DatabaseService {
     return window.location.protocol + "//" + window.location.hostname + ":8000/api/" + endpoint;
   }
 
-  private static getAPIParameters(params: SearchParameters | undefined): {} | {include: string} {
+  private static getAPIParameters(params: SearchParameters | undefined): {} | { include: string } {
     if (params && params.include) {
       return {include: params.include.join(',')}
     }
@@ -104,14 +105,14 @@ export class DatabaseService {
     // array of objects
     const responseArray: {}[] = (Array.isArray(response.data)) ? response.data : [response.data];
     return responseArray.map(
-      (modelData: {[key: string]: string}) => {
+      (modelData: { [key: string]: string }) => {
 
-        let responseData: {[key: string]: string | []} = {};
+        let responseData: { [key: string]: string | [] } = {};
         for (const k in modelData) {
           if (typeof modelData[k] === 'object' && modelData[k] !== null) {
             // these are includes
             // @ts-ignore
-            let includes = modelData[k] as {data: []};
+            let includes = modelData[k] as { data: [] };
             responseData[k] = includes.data;
           } else {
             responseData[k] = modelData[k];
@@ -121,5 +122,19 @@ export class DatabaseService {
         return responseData as unknown as T;
       }
     )
+  }
+
+  public logout() {
+    let token = localStorage.getItem('userToken')!;
+    this.httpOptions.headers = this.httpOptions.headers.append('Authorization', 'Bearer ' + token);
+    this.http.post<{ logged_out: boolean }>(
+      window.location.protocol + "//" + window.location.hostname + ":8000/api/users/logout",
+      {},
+      this.httpOptions
+    ).subscribe(
+      (data) => {
+        this.router.navigate(['/login']);
+      }
+    );
   }
 }

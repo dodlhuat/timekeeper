@@ -136,7 +136,7 @@ export class CalendarService {
     if (fullWeeks) {
       let nextMonthDay = 1;
       const month_number = (lastDayInThisMonth.getMonth() + 2 > 12) ? 1 : lastDayInThisMonth.getMonth() + 2;
-      for (let i = this.reIndexDay(lastDayInThisMonth.getDay()); i < 7; i++) {
+      for (let i = this.reIndexDay(lastDayInThisMonth.getDay()) + 1; i < 7; i++) {
         weekDays.push(
           {
             month_number,

@@ -3,7 +3,7 @@
     <mat-card-header>
       <mat-card-title>{{'Login to Timekeeper' | translate}}</mat-card-title>
     </mat-card-header>
-    <mat-card-content class="flex-container">
+    <mat-card-content class="flex-container" (keydown.enter)="authenticate()">
       <mat-form-field appearance="legacy">
         <mat-label>Username</mat-label>
         <input matInput placeholder="{{'Enter username' | translate}}" [formControl]="username">

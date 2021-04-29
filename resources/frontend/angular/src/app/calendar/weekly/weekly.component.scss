@@ -1,28 +1,123 @@
 @import "../../../styles";
 
 .calendar-weekly {
-  position: relative;
+  padding: $gap;
 }
 
-.days > div, .timeline > div {
+.days > div, .timeline > div, .entries > div {
   float: left;
 }
 
+.days:after, .timeline:after, .entries:after {
+  content: '';
+  display: block;
+  clear: both;
+  float: none;
+}
+
 .day-element {
-  width: calc((100% - 60px) / 7);
+  // 60 for the hours on the left + 1 for border
+  width: calc((100% - 61px) / 7);
+
+  .day-name {
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .day-number {
+    text-align: center;
+    font-size: 16px;
+    height: 28px;
+    width: 28px;
+    line-height: 28px;
+    border-radius: 28px;
+    margin: auto;
+  }
+}
+
+.day-element.active {
+  .day-name {
+    color: mat-color($timekeeper-app-accent);
+  }
+
+  .day-number {
+    background: mat-color($timekeeper-app-accent);
+    color: white;
+    font-weight: bold;
+  }
 }
 
 .hours {
   width: 60px;
+
+  div {
+    padding-bottom: 1px;
+  }
 }
 
 .hours, .timeline div {
   min-height: 20px;
 }
 
-.days:after, .timeline:after {
-  content: '';
-  display: block;
-  clear: both;
-  float: none;
+.timeline {
+  .day-element div {
+    border-right: 1px solid grey;
+    border-bottom: 1px solid grey;
+  }
+
+  div:nth-of-type(2).day-element {
+    border-left: 1px solid grey;
+  }
+
+  .day-element div:nth-of-type(1) {
+    border-top: 1px solid grey;
+  }
+
+  .day-element div:nth-child(2n + 1) {
+    border-bottom: 1px solid lightgrey;
+  }
+
+  .day-element div {
+    position: relative;
+    z-index: 1;
+  }
 }
+
+/*
+.days .day-element {
+  padding-bottom: 8px;
+}
+
+.entries {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  margin-left: 60px;
+  margin-top: 56px;
+
+  .day-element {
+    min-height: 1px;
+  }
+}
+
+.entries div.entry {;
+  background: deeppink;
+  position: relative;
+  border-radius: 8px;
+  z-index: 99;
+  // 20 * halbe stunden + 1 * halbe stunden (für den border)
+  height: 126px;
+
+  span {
+    display: block;
+  }
+}
+*/
+// die 30 minuten schritte fehlen
+@for $i from 1 to 23 {
+  .entry.start-#{$i} {
+    top: 21px * $i;
+  }
+}
+
