@@ -1,4 +1,5 @@
 @import "../../assets/styles/global";
+@import "../../styles";
 
 .flex-container {
   display: flex;
@@ -18,4 +19,26 @@
 
 mat-spinner {
   margin: auto;
+}
+
+.login-form mat-form-field {
+  width: 100%;
+}
+
+.login-form.ng-invalid {
+  mat-form-field .mat-form-field-underline {
+    background-color: mat-color($timekeeper-app-warn);
+  }
+
+  mat-label {
+    color: mat-color($timekeeper-app-warn);
+  }
+}
+
+.login-form.ng-invalid mat-form-field .mat-form-field-underline {
+  background-color: mat-color($timekeeper-app-warn);
+}
+
+.mat-form-field-underline {
+  background-color: mat-color($timekeeper-app-accent);
 }

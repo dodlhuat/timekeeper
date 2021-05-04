@@ -1,20 +1,24 @@
 <div class="flex-container">
-  <mat-card *ngIf="!globalLoading" class="login-card">
+  <mat-card *ngIf="!globalLoading" class="login-card" [@bounceIn]="bounceIn">
     <mat-card-header>
       <mat-card-title>{{'Login to Timekeeper' | translate}}</mat-card-title>
     </mat-card-header>
     <mat-card-content class="flex-container" (keydown.enter)="authenticate()">
-      <mat-form-field appearance="legacy">
-        <mat-label>Username</mat-label>
-        <input matInput placeholder="{{'Enter username' | translate}}" [formControl]="username">
-        <mat-error *ngIf="username.invalid && username.dirty">{{'Invalid credentials' | translate}}</mat-error>
-      </mat-form-field>
+      <form [formGroup]="loginForm" class="login-form">
+        <mat-form-field appearance="legacy">
+          <mat-label>Username</mat-label>
+          <input matInput placeholder="{{'Enter username' | translate}}" formControlName="username">
+          <mat-error *ngIf="loginForm.invalid">{{'Invalid username' | translate}}</mat-error>
+        </mat-form-field>
 
-      <mat-form-field appearance="legacy">
-        <mat-label>{{'Password' | translate}}</mat-label>
-        <input matInput placeholder="{{'Enter password' | translate}}" type="password" [formControl]="password">
-        <mat-error *ngIf="password.invalid && password.dirty">{{'Invalid credentials' | translate}}</mat-error>
-      </mat-form-field>
+        <mat-form-field appearance="legacy">
+          <mat-label>{{'Password' | translate}}</mat-label>
+          <input matInput placeholder="{{'Enter password' | translate}}" type="password" formControlName="password">
+          <mat-error *ngIf="loginForm.invalid">{{'Invalid password' | translate}}</mat-error>
+        </mat-form-field>
+
+        <mat-error *ngIf="loginForm.invalid">{{'Invalid input - Please check credentials' | translate}}</mat-error>
+      </form>
 
       <button [disabled]="buttonLoading" mat-flat-button color="primary"
               (click)="authenticate()">{{'Login' | translate}}
@@ -22,5 +26,7 @@
       </button>
     </mat-card-content>
   </mat-card>
-  <div class="spinner-container" *ngIf="globalLoading"><mat-spinner></mat-spinner></div>
+  <div class="spinner-container" *ngIf="globalLoading">
+    <mat-spinner></mat-spinner>
+  </div>
 </div>
