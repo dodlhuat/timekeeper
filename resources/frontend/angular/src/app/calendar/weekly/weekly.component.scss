@@ -83,37 +83,51 @@
   }
 }
 
-/*
-.days .day-element {
-  padding-bottom: 8px;
-}
-
-.entries {
+.trackings {
+  border: none !important;
   position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  margin-left: 60px;
-  margin-top: 56px;
+  top: -21px;
+  margin-bottom: -21px;
 
-  .day-element {
-    min-height: 1px;
+  > div.entry {
+    position: absolute;
+    background: lightblue;
+    border: none !important;
+    margin-right: $gap / 2;
+    span {
+      display: inline-block;
+      color: white;
+      margin-left: $gap;
+      margin-right: $gap;
+      font-size: smaller;
+    }
+    span.type {
+      font-weight: bold;
+      margin-top: $gap;
+    }
+  }
+
+  @for $i from 0 to 47 {
+    $full: ($i - 47) * -1;
+    $minute: 30;
+    @if $full % 2 == 0 {
+      $full: $full / 2;
+      $minute: 0;
+    } @else {
+      $full: ($full - 1) / 2;
+    }
+    > div.entry.start-#{$full}-#{$minute} {
+      top: -1 * (21px * $i);
+    }
+  }
+
+  @for $i from 1 to 24 {
+    > div.entry.length-#{$i * 30} {
+      height: 21px * $i;
+    }
   }
 }
 
-.entries div.entry {;
-  background: deeppink;
-  position: relative;
-  border-radius: 8px;
-  z-index: 99;
-  // 20 * halbe stunden + 1 * halbe stunden (für den border)
-  height: 126px;
-
-  span {
-    display: block;
-  }
-}
-*/
 // die 30 minuten schritte fehlen
 @for $i from 1 to 23 {
   .entry.start-#{$i} {

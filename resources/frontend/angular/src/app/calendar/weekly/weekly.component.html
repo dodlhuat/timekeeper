@@ -16,7 +16,7 @@
       <div *ngFor="let day of days" class="day-element">
         <div *ngFor="let hour of fullDayTime" (click)="showAddEntryModal(hour, day)"></div>
         <div class="trackings">
-
+          <div class="entry start-8-0 length-240" *ngIf="day.number == 20"><span class="type">Homeoffice</span><span class="time">08:00 - 12:00</span></div>
         </div>
       </div>
     </div>
